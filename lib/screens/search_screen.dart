@@ -13,36 +13,61 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<Article> articles = []; // 検索結果を格納する変数
+
+  // 検索結果を格納する変数
+  List<Article> articles = []; 
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      //上部バーの設定
       appBar: AppBar(
         title: const Text('Qiita Search'),
       ),
+      
+      //本文の設定
       body: Column(
         children: [
+
           // 検索ボックス
           Padding(
+
+            //検索ボックスの余白調整
             padding: const EdgeInsets.symmetric(
               vertical: 12,
               horizontal: 36,
             ),
+
+            //検索フィールドの編集
             child: TextField(
+
+              //スタイルの調整
               style: const TextStyle(
                 fontSize: 18,
                 color: Colors.black,
               ),
+               
+              //プレースホルダ(ヒントテキスト)の編集
               decoration: const InputDecoration(
                 hintText: '検索ワードを入力してください',
               ),
+
+              //Enterボタン押下後の処理
               onSubmitted: (String value) async {
-                final results = await searchQiita(value); // 検索処理を実行する
-                setState(() => articles = results); // 検索結果を代入
+
+                // Qiita記事をキーワード検索し10件取得する処理をして、変数に代入する
+                final results = await searchQiita(value); 
+                // 検索結果を代入
+                setState(() => articles = results); 
               },
+
             ),
+
           ),
+
+          //検索結果の表示
+          //縦方向の制御を行う
           Expanded(
             child: ListView(
               children: articles
@@ -50,23 +75,27 @@ class _SearchScreenState extends State<SearchScreen> {
                   .toList(),
             ),
           ),
-         ],
+
+        ],
       ),
     );
   }
 }
 
+//Qiita記事をキーワード検索し10件取得する処理
 Future<List<Article>> searchQiita(String keyword) async {
+
   // 1. http通信に必要なデータを準備をする
-  //   - URL、クエリパラメータの設定
+  //   - 第一引数：BaseURL、第二引数：URL、第三引数：クエリパラメータの設定
   final uri = Uri.https('qiita.com', '/api/v2/items', {
     'query': 'title:$keyword',
     'per_page': '10',
   });
+
   //   - アクセストークンの取得
   final String token = dotenv.env['QIITA_ACCESS_TOKEN'] ?? '';
 
-  // 2. Qiita APIにリクエストを送る
+  // 2. アクセストークンを含めてリクエストを送信
   final http.Response res = await http.get(uri, headers: {
     'Authorization': 'Bearer $token',
   });

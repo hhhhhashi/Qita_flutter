@@ -10,16 +10,22 @@ class ArticleContainer extends StatelessWidget {
     required this.article,
   });
 
+  ///記事の情報を保持する
   final Article article;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
+
+      //余白の設定
       padding: const EdgeInsets.symmetric(
          vertical: 12,
          horizontal: 16,
-       ),
-       child: GestureDetector( // GestureDetectorでContainerを囲う
+      ),
+
+      child: GestureDetector(
+
+        //画面遷移
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -27,21 +33,31 @@ class ArticleContainer extends StatelessWidget {
             ),
           );
         },
+
+        //検索結果一覧のコンテンツの設定
         child: Container(
-          padding: const EdgeInsets.symmetric( // ← 内側の余白を指定
+
+          //内側の余白を指定
+          padding: const EdgeInsets.symmetric( 
             horizontal: 20,
             vertical: 16,
           ),
+
+          //スタイルの設定
           decoration: const BoxDecoration(
-            color: Color(0xFF55C500), // ← 背景色を指定
+            color: Color(0xFF55C500), 
             borderRadius: BorderRadius.all(
-              Radius.circular(32),// ← 角丸を設定
+              Radius.circular(32),
             ),
           ),
+
+          //コンテンツに表示される項目の設定
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+
             children: [
-              // 投稿日
+
+              // 投稿日のスタイル設定
               Text(
                 DateFormat('yyyy/MM/dd').format(article.createdAt),
                 style: const TextStyle(
@@ -49,7 +65,8 @@ class ArticleContainer extends StatelessWidget {
                   fontSize: 12,
                 ),
               ),
-              // タイトル
+
+              // タイトルのスタイル設定
               Text(
                 article.title,
                 maxLines: 2,
@@ -60,7 +77,8 @@ class ArticleContainer extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              // タグ
+
+              // タグのスタイル設定
               Text(
                 '#${article.tags.join(' #')}',
                 style: const TextStyle(
@@ -70,10 +88,15 @@ class ArticleContainer extends StatelessWidget {
                 ),
               ),
               
+
               Row(
+                //ハートアイコンいいね数と投稿者のアイコン投稿者名の間隔を指定
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //ハートアイコンいいね数と投稿者のアイコン投稿者名の縦方向の指定
                 crossAxisAlignment: CrossAxisAlignment.end,
+
                 children: [
+
                   // ハートアイコンといいね数
                   Column(
                     children: [
@@ -90,15 +113,21 @@ class ArticleContainer extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // 投稿者のアイコンと投稿者名
+
+                  // 投稿者のアイコンと投稿者名の設定
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
+
                     children: [
+                      //投稿者アイコンの設定
                       CircleAvatar(
                         radius: 26,
                         backgroundImage: NetworkImage(article.user.profileImageUrl),
                       ),
+
                       const SizedBox(height: 4),
+                      
+                      //投稿者名の設定
                       Text(
                         article.user.id,
                         style: const TextStyle(
@@ -107,11 +136,13 @@ class ArticleContainer extends StatelessWidget {
                         ),
                       ),
                     ],
+
                   ),
                 ],
               ),
             ],
-          ),
+          ),//コンテンツに表示される項目の設定終了
+
         ),
       )
     );

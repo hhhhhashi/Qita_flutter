@@ -9,13 +9,16 @@ class ArticleScreen extends StatefulWidget {
     required this.article,
   });
 
+  //検索結果を保持する
   final Article article;
 
   @override
   State<ArticleScreen> createState() => _ArticleScreenState();
 }
 
+
 class _ArticleScreenState extends State<ArticleScreen> {
+  
   late WebViewController controller = WebViewController()
      ..loadRequest(
        Uri.parse(widget.article.url),
